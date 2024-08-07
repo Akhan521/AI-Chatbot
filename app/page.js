@@ -136,6 +136,11 @@ export default function Home() {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
+            sx={{
+              '& .MuiInputBase-input': {
+                color: 'white', // Sets the text color inside the input field to white
+              }
+            }}
           />
           <Button variant="contained" onClick={sendMessage} disabled={isLoading}>
             {isLoading ? 'Sending...' : 'Send'}
