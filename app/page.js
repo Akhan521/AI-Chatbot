@@ -93,7 +93,7 @@ export default function Home() {
         direction={'column'}
         width="500px"
         height="700px"
-        border="1px solid black"
+        border="1px solid #9A9498"
         p={2}
         spacing={3}
       >
@@ -137,9 +137,29 @@ export default function Home() {
             onKeyDown={handleKeyPress}
             disabled={isLoading}
             sx={{
+              '& label': {
+                color: '#9A9498', // Sets the label color to white
+              },
+              '&:hover label': {
+                color: 'white', // Sets the label color to white on hover
+              },
               '& .MuiInputBase-input': {
                 color: 'white', // Sets the text color inside the input field to white
-              }
+              },
+              '& label.Mui-focused': {
+                color: 'white',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#9A9498',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'white',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#9A9498',
+                },
+              },
             }}
           />
           <Button variant="contained" onClick={sendMessage} disabled={isLoading}>
