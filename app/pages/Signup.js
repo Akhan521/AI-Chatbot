@@ -65,7 +65,7 @@ function Signup() {
         padding: 3
       }}
     >
-      <Typography variant="h4" gutterBottom sx={{ color: '#424242' }}>
+      <Typography variant="h2" gutterBottom sx={{ color: '#424242' }}>
         Signup
       </Typography>
 
@@ -82,6 +82,8 @@ function Signup() {
           gap: 2, // Provides consistent spacing between elements
         }}
       >
+
+      
         <TextField
           label="Username"
           variant="outlined"
@@ -98,7 +100,7 @@ function Signup() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          fullWidth
+          FullWidth
         />
 
         <TextField
@@ -111,13 +113,26 @@ function Signup() {
           fullWidth
         />
 
+
+
+<Box
+        display="flex"
+        justifyContent="center" // Centers the button horizontally
+        width="100%" // Ensures the container spans the full width
+      >
         <Button
           type="submit"
           variant="contained"
-          sx={{ bgcolor: 'secondary.main', color: 'white' }}
+          sx={{  bgcolor: 'secondary.main',
+            color: 'white',
+            width: 120, // Setting a fixed width
+            px: 2, // Horizontal padding
+            py: 1 }}
         >
-          Signup
+          Sign Up
         </Button>
+      </Box>
+
 
         <Typography sx={{ mt: 2 }}>
           Already have an account? <Link href="/login" underline="hover">Login</Link>
