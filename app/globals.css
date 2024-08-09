@@ -86,6 +86,7 @@ body {
 }
 
 body {
+
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -104,4 +105,8 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.ubuntu {
+  font-family: "Ubuntu Monospace";
 }
