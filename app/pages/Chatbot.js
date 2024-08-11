@@ -47,16 +47,8 @@ function Chatbot() {
     setMessages((messages) => [
       ...messages,
       { role: 'user', content: message },
-      { role: 'assistant', content: "Processing your request..." },
-    ])
-
-    // clear messsages
-    setMessages((messages) => [
-      ...messages,
       { role: 'assistant', content: "" },
     ])
-    
-    await new Promise(resolve => setTimeout(resolve, "Processing your request...".length * typingSpeed)); // Wait for the typing effect
   
     // Fetch data from the API and handle response.
     try {

@@ -97,7 +97,7 @@ function Signup() {
       }}
     >
       <Typography variant="h2" gutterBottom sx={{ color: 'white' }}>
-        Signup
+        Sign up
       </Typography>
 
       {error && <Typography color="error">{error}</Typography>}

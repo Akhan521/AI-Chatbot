@@ -28,7 +28,9 @@ function Home() {
         
       }}
     >
-      <Typography variant="h2" gutterBottom sx={{ fontWeight: 'bold', animation: 'fadeSlideIn 1.2s ease-out forwards',
+      <Typography variant="h2" gutterBottom sx={{ 
+        //fontFamily: 'Arial',
+        fontWeight: 'bold', animation: 'fadeSlideIn 1.2s ease-out forwards',
         '@keyframes fadeSlideIn': {
           '0%': {
             opacity: 0,
