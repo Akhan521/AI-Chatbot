@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, TextField, Button, Typography } from '@mui/material';
+import { motion } from "framer-motion";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -85,6 +86,13 @@ function Signup() {
   };
 
   return (
+    <motion.div
+      //using clip path, animate the exit of the signup page
+      initial={{ clipPath: "polygon(50% 0, 50% 0, 50% 100%, 50% 100%)" }}
+      animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
+      exit={{ clipPath: "polygon(50% 0, 50% 0, 50% 100%, 50% 100%)" }}
+      transition={{ duration: 0.5 }}
+    >
     <Box
       display="flex"
       flexDirection="column"
@@ -149,7 +157,7 @@ function Signup() {
 
 
 
-<Box
+  <Box
         display="flex"
         justifyContent="center" // Centers the button horizontally
         width="100%" // Ensures the container spans the full width
@@ -184,6 +192,7 @@ function Signup() {
         </Box>
       </Box>
     </Box>
+  </motion.div>
   );
 }
 
