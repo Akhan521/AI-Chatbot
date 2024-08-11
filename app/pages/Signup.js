@@ -13,12 +13,43 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [hover, setHover] = useState(false);
+
+  const linkStyle = {
+    color: hover ? '#CDB1FF' : 'white',
+  };
+
+  const textfieldStyle = {
+    '& label': {
+      color: '#9A9498',
+    },
+    '&:hover label': {
+      color: 'white', // Sets the label color to white on hover
+    },
+    '& .MuiInputBase-input': {
+      color: 'white', // Sets the text color inside the input field to white
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#9A9498',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#9A9498',
+      },
+    },
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isStrongPassword(password)) {
       setError(
-        "Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character"
+        "Password must be at least 8 characters long, contain an uppercase, a lowercase, a number, and a special character."
       );
       return;
     }
@@ -61,11 +92,11 @@ function Signup() {
       justifyContent="center"
       sx={{
         minHeight: '100vh', // Ensure it takes at least the full height of the viewport
-        bgcolor: 'background.paper',
+        bgcolor: '#4A148C',
         padding: 3
       }}
     >
-      <Typography variant="h2" gutterBottom sx={{ color: '#424242' }}>
+      <Typography variant="h2" gutterBottom sx={{ color: 'white' }}>
         Signup
       </Typography>
 
@@ -88,6 +119,7 @@ function Signup() {
           label="Username"
           variant="outlined"
           value={username}
+          sx={textfieldStyle}
           onChange={(e) => setUsername(e.target.value)}
           required
           fullWidth
@@ -98,6 +130,7 @@ function Signup() {
           variant="outlined"
           type="email"
           value={email}
+          sx={textfieldStyle}
           onChange={(e) => setEmail(e.target.value)}
           required
           FullWidth
@@ -108,6 +141,7 @@ function Signup() {
           variant="outlined"
           type="password"
           value={password}
+          sx={textfieldStyle}
           onChange={(e) => setPassword(e.target.value)}
           required
           fullWidth
@@ -133,10 +167,21 @@ function Signup() {
         </Button>
       </Box>
 
-
+      <Box
+        display="flex"
+        justifyContent="center"
+        width="100%"
+      >
         <Typography sx={{ mt: 2 }}>
-          Already have an account? <Link href="/login" underline="hover">Login</Link>
+          Already have an account?{" "}
+          <Link 
+            style={linkStyle}
+            to="/login"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            >Login</Link>
         </Typography>
+        </Box>
       </Box>
     </Box>
   );

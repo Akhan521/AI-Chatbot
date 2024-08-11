@@ -3,6 +3,8 @@
 import { Box, Button, Stack, TextField } from '@mui/material'
 import { createRef, useState, useEffect, useRef } from 'react'
 
+const typingSpeed = 30; // Speed of typing can be adjusted here
+
 function TypingMessage({ text }) {
   const [displayText, setDisplayText] = useState('');
   const index = useRef(0);
@@ -18,7 +20,7 @@ function TypingMessage({ text }) {
       } else {
         clearInterval(timer);
       }
-    }, 50); // Speed of typing can be adjusted
+    }, typingSpeed);
 
     return () => clearInterval(timer);
   }, [text]);
@@ -53,11 +55,8 @@ function Chatbot() {
       ...messages,
       { role: 'assistant', content: "" },
     ])
-  
-    // Simulate processing delay and typing effect.
-    //await new Promise(resolve => setTimeout(resolve, 500)); // Delay to simulate processing
     
-    await new Promise(resolve => setTimeout(resolve, "Processing your request...".length * 50)); // Wait for the typing effect
+    await new Promise(resolve => setTimeout(resolve, "Processing your request...".length * typingSpeed)); // Wait for the typing effect
   
     // Fetch data from the API and handle response.
     try {
@@ -166,7 +165,7 @@ const handleKeyPress = (event) => {
             disabled={isLoading}
             sx={{
               '& label': {
-                color: '#9A9498', // Sets the label color to white
+                color: '#9A9498',
               },
               '&:hover label': {
                 color: 'white', // Sets the label color to white on hover
