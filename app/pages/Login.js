@@ -12,6 +12,37 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [hover, setHover] = useState(false);
+
+  const linkStyle = {
+    color: hover ? '#CDB1FF' : 'white',
+  };
+
+  const textfieldStyle = {
+    '& label': {
+        color: '#9A9498',
+    },
+    '&:hover label': {
+      color: 'white', // Sets the label color to white on hover
+    },
+    '& .MuiInputBase-input': {
+      color: 'white', // Sets the text color inside the input field to white
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#9A9498',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#9A9498',
+      },
+    },
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,11 +62,13 @@ function Login() {
       justifyContent="center"
       sx={{
         minHeight: '100vh', // Ensure it takes at least the full height of the viewport
-        bgcolor: 'background.paper',
+        //set background color to white
+        backgroundColor: '#4A148C', // Dark background color
+        color: 'white', // Text color to white
         padding: 3
       }}
     >
-      <Typography variant="h2" gutterBottom sx={{ color: '#424242' }}>
+      <Typography variant="h2" gutterBottom>
         Login
       </Typography>
   
@@ -62,6 +95,7 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
           fullWidth // 'mb' adds margin-bottom for spacing between fields
+          sx={textfieldStyle}
         />
 
         <TextField
@@ -72,6 +106,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
           fullWidth
+          sx={textfieldStyle}
         />
    
 
@@ -93,11 +128,25 @@ function Login() {
           Login
         </Button>
       </Box>
-
   
-        <Typography sx={{ mt: 2 }}>
-          Already have an account? <Link href="/login" underline="hover">Login</Link>
+      <Box
+        display="flex"
+        justifyContent="center"
+        width="100%"
+      >
+        <Typography
+        sx={{ mt: 2 }}
+        >
+          Don't have an account?{" "}
+          <Link
+            style={linkStyle}
+            to="/signup"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            >Sign Up
+          </Link>
         </Typography>
+        </Box>
       </Box>
     </Box>
   );

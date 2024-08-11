@@ -1,8 +1,9 @@
-
-'use client'
+"use client";
 
 import { Box, Button, Stack, TextField } from '@mui/material'
 import { createRef, useState, useEffect, useRef } from 'react'
+
+const typingSpeed = 30; // Speed of typing can be adjusted here
 
 function TypingMessage({ text }) {
   const [displayText, setDisplayText] = useState('');
@@ -19,7 +20,7 @@ function TypingMessage({ text }) {
       } else {
         clearInterval(timer);
       }
-    }, 50); // Speed of typing can be adjusted
+    }, typingSpeed);
 
     return () => clearInterval(timer);
   }, [text]);
@@ -27,17 +28,13 @@ function TypingMessage({ text }) {
   return <span className="typing">{displayText}</span>;
 }
 
-
-
-
 function Chatbot() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hello! I'm the Headstarter support assistant. How can I help you today?",
+      content: "Hello! I'm your personal support assistant. How can I help you today?",
     },
   ]);
-
 
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -45,23 +42,13 @@ function Chatbot() {
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return;
     setIsLoading(true);
-  
-    // Add user message immediately.
-    setMessages(prevMessages => [
-      ...prevMessages,
+
+    setMessage('')
+    setMessages((messages) => [
+      ...messages,
       { role: 'user', content: message },
-    ]);
-  
-    // Simulate processing delay and typing effect.
-    await new Promise(resolve => setTimeout(resolve, 500)); // Delay to simulate processing
-  
-    // Add processing message and wait for it to finish typing.
-    setMessages(prevMessages => [
-      ...prevMessages,
-      { role: 'assistant', content: "Processing your request..." },
-    ]);
-    
-    await new Promise(resolve => setTimeout(resolve, "Processing your request...".length * 50)); // Wait for the typing effect
+      { role: 'assistant', content: "" },
+    ])
   
     // Fetch data from the API and handle response.
     try {
@@ -70,26 +57,36 @@ function Chatbot() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ role: 'user', content: message }),
+        body: JSON.stringify([...messages, { role: 'user', content: message }]),
       });
   
       if (!response.ok) throw new Error('Network response was not ok');
   
-      const resultText = "I'm sorry, but I encountered an error. Please try again later."; // Simplified for example
-      setMessages(prevMessages => [
-        ...prevMessages,
-        { role: 'assistant', content: resultText },
-      ]);
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const text = decoder.decode(value, { stream: true })
+        setMessages((messages) => {
+          let lastMessage = messages[messages.length - 1]
+          let otherMessages = messages.slice(0, messages.length - 1)
+          return [
+            ...otherMessages,
+            { ...lastMessage, content: lastMessage.content + text },
+          ]
+        })
+      }
     } catch (error) {
       console.error('Error:', error);
-      setMessages(prevMessages => [
-        ...prevMessages,
+      setMessages(messages => [
+        ...messages,
         { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
       ]);
     }
   
     setIsLoading(false);
-    setMessage(''); // Clear the input box after all processing
   };
   
 
@@ -123,17 +120,18 @@ const handleKeyPress = (event) => {
       <Stack
         direction="column"
         width="100vw"
-        height="700px"
-        border="1px solid black"
+        height="100vh"
+        border="1px solid #9A9498"
         p={2}
         spacing={3}
       >
         <Stack
           direction="column"
-          spacing={2}
+          spacing={5}
           flexGrow={1}
           overflow="auto"
           maxHeight="100%"
+          p={2}
         >
           {messages.map((message, index) => (
             <Box key={index} display="flex" justifyContent={message.role === 'assistant' ? 'flex-start' : 'flex-end'}>
@@ -141,7 +139,7 @@ const handleKeyPress = (event) => {
                 color="white"
                 borderRadius={16}
                 p={3}
-                sx={{ maxWidth: 'fit-content', width: 'auto' }}
+                sx={{ maxWidth: 'fit-content', width: 'auto'}}
               >
                 <TypingMessage key={message.content} text={message.content} />
               </Box>
@@ -158,9 +156,29 @@ const handleKeyPress = (event) => {
             onKeyDown={handleKeyPress}
             disabled={isLoading}
             sx={{
+              '& label': {
+                color: '#9A9498',
+              },
+              '&:hover label': {
+                color: 'white', // Sets the label color to white on hover
+              },
               '& .MuiInputBase-input': {
                 color: 'white', // Sets the text color inside the input field to white
-              }
+              },
+              '& label.Mui-focused': {
+                color: 'white',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#9A9498',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'white',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#9A9498',
+                },
+              },
             }}
           />
           <Button variant="contained" onClick={sendMessage} disabled={isLoading}>

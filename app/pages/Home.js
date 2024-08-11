@@ -12,6 +12,7 @@ function Home() {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#4A148C', // Dark background color
+        overflow: 'hidden', // Hide the scroll bar to avoid animation shifts
         color: 'white', // Text color to white
         animation: 'fadeSlideIn 1s ease-out forwards',
         '@keyframes fadeSlideIn': {
@@ -27,7 +28,9 @@ function Home() {
         
       }}
     >
-      <Typography variant="h2" gutterBottom sx={{ fontWeight: 'bold', animation: 'fadeSlideIn 1.2s ease-out forwards',
+      <Typography variant="h2" gutterBottom sx={{ 
+        //fontFamily: 'Arial',
+        fontWeight: 'bold', animation: 'fadeSlideIn 1.2s ease-out forwards',
         '@keyframes fadeSlideIn': {
           '0%': {
             opacity: 0,
@@ -69,7 +72,7 @@ function Home() {
           }
         }}
       >
-        Signup
+        Sign up
       </Button>
     </Box>
   );
