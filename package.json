@@ -18,7 +18,8 @@
     "openai": "^4.54.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "react-stars": "^2.2.5"
   },
   "devDependencies": {
     "eslint": "^8",

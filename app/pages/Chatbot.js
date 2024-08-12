@@ -1,7 +1,8 @@
 "use client";
 
-import { Box, Button, Stack, TextField } from "@mui/material";
-import { createRef, useState, useEffect, useRef, useContext } from "react";
+import { Box, Button, Stack, TextField, Typography } from '@mui/material'
+import { createRef, useState, useEffect, useRef, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { AuthContext } from "../contexts/AuthContext";
 
 const typingSpeed = 30; // Speed of typing can be adjusted here
@@ -29,10 +30,11 @@ function TypingMessage({ text }) {
 }
 
 function Chatbot() {
+
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Hello! I'm your personal character chatbot. How are you today?",
+      content: "Hello! I'm your personalized Nakama Chatbot. To get started, please specify who you'd like me to be. ( Ex. Change to Batman )",
     },
   ]);
 
@@ -165,7 +167,20 @@ function Chatbot() {
           <div ref={messagesEndRef} />
         </Stack>
         <Stack direction="row" spacing={2} width="100%">
-          <TextField
+        <Button
+            sx={{
+              bgcolor: '#673ab7',
+              ':hover': {
+                bgcolor: '#4A148C', // Darker shade for hover on login
+              }
+            }}
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/feedback"
+          >Feedback 
+        </Button>
+        <TextField
             label="Message"
             fullWidth
             value={message}
