@@ -33,7 +33,7 @@ export async function POST(req) {
       ...(character
         ? [{ role: "system", content: `Current character: ${character}` }]
         : []),
-      ...messages.slice(messages.length < 15 ? 0 : messages.length - 15, -1),
+      ...messages.slice(messages.length < 15 ? 0 : messages.length - 15),
     ];
 
     console.log("Prepared AI messages:", aiMessages);
