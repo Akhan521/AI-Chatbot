@@ -3,6 +3,7 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ReactStars from 'react-stars';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function Feedback() {
 
@@ -37,6 +38,15 @@ function Feedback() {
       };
 
     return (
+        <AnimatePresence
+        >
+        <motion.div
+            // Using clip path, animate the exit of the login page
+            initial={{ clipPath: 'circle(0% at 50% 50%)' }}
+            animate={{ clipPath: 'circle(100% at 50% 50%)' }}
+            exit={{ clipPath: 'circle(0% at 50% 50%)' }}
+            transition={{ duration: 1 }}
+        >
         <Box
             sx={{
                 width: '100%',
@@ -119,6 +129,8 @@ function Feedback() {
                 Upon submission, you will be redirected back to the chatbot.
             </Typography>
         </Box>
+        </motion.div>
+        </AnimatePresence>
     )
 }
 

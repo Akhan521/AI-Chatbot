@@ -1,41 +1,83 @@
-import {NextResponse} from 'next/server' // Import NextResponse from Next.js for handling responses
-import OpenAI from 'openai' // Import OpenAI library for interacting with the OpenAI API
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
+import { firestore } from "../firebase/firebase"; // Adjust the import path as needed
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
-// System prompt for the AI, providing guidelines on how to respond to users
-const systemPrompt = 'you are an anime nerd, you love One Piece. You only answer in One Piece references.'; // Use your own system prompt here
+const systemPrompt =
+  "Act as the requested character. Only respond in character. If no character is set, ask the user to set one. To set a character, respond with: SET [character details] | [response in character style].";
 
-// POST function to handle incoming requests
 export async function POST(req) {
-  const openai = new OpenAI() // Create a new instance of the OpenAI client
-  const data = await req.json() // Parse the JSON body of the incoming request
+  try {
+    const openai = new OpenAI();
+    const { user, messages } = await req.json();
 
-  // Create a chat completion request to the OpenAI API
-  const completion = await openai.chat.completions.create({
-    messages: [{role: 'system', content: systemPrompt}, ...data], // Include the system prompt and user messages
-    model: 'gpt-4o-mini', // Specify the model to use
-    stream: true, // Enable streaming responses
-  })
+    console.log("Received request:", { user, messages });
 
-  // Create a ReadableStream to handle the streaming response
-  const stream = new ReadableStream({
-    async start(controller) {
-      const encoder = new TextEncoder() // Create a TextEncoder to convert strings to Uint8Array
+    // Fetch the user's character from Firestore
+    const userDocRef = doc(firestore, "users", user.uid);
+    let character;
+    try {
+      const userDoc = await getDoc(userDocRef);
+      character = userDoc.exists() ? userDoc.data().character : null;
+      console.log("Fetched character:", character);
+    } catch (firestoreError) {
+      console.error("Error fetching from Firestore:", firestoreError);
+      return new NextResponse(JSON.stringify({ error: "Database error" }), {
+        status: 500,
+      });
+    }
+
+    // Prepare messages for OpenAI, including the character if set
+    const aiMessages = [
+      { role: "system", content: systemPrompt },
+      ...(character
+        ? [{ role: "system", content: `Current character: ${character}` }]
+        : []),
+      ...messages.slice(messages.length < 15 ? 0 : messages.length - 15, -1),
+    ];
+
+    console.log("Prepared AI messages:", aiMessages);
+
+    let completion;
+    try {
+      completion = await openai.chat.completions.create({
+        messages: aiMessages,
+        model: "gpt-4o-mini", // Make sure this is the correct model name
+      });
+    } catch (openaiError) {
+      console.error("Error creating OpenAI chat completion:", openaiError);
+      return new NextResponse(JSON.stringify({ error: "AI service error" }), {
+        status: 500,
+      });
+    }
+
+    let aiResponse = completion.choices[0]["message"]["content"];
+    console.log(aiResponse);
+
+    if (aiResponse.startsWith("SET")) {
+      let barIndex = aiResponse.indexOf("|");
+      let newCharacterName = aiResponse.substring(3, barIndex);
+      aiResponse = aiResponse.substring(barIndex + 1);
+
       try {
-        // Iterate over the streamed chunks of the response
-        for await (const chunk of completion) {
-          const content = chunk.choices[0]?.delta?.content // Extract the content from the chunk
-          if (content) {
-            const text = encoder.encode(content) // Encode the content to Uint8Array
-            controller.enqueue(text) // Enqueue the encoded text to the stream
-          }
-        }
-      } catch (err) {
-        controller.error(err) // Handle any errors that occur during streaming
-      } finally {
-        controller.close() // Close the stream when done
+        // Update the character in Firestore
+        await setDoc(
+          userDocRef,
+          { character: newCharacterName },
+          { merge: true }
+        );
+        console.log("Updated character in Firestore:", newCharacterName);
+      } catch (updateError) {
+        console.error("Error updating character in Firestore:", updateError);
       }
-    },
-  })
+    }
 
-  return new NextResponse(stream) // Return the stream as the response
+    return new NextResponse(aiResponse);
+  } catch (error) {
+    console.error("Unexpected error in POST handler:", error);
+    return new NextResponse(
+      JSON.stringify({ error: "Unexpected server error" }),
+      { status: 500 }
+    );
+  }
 }

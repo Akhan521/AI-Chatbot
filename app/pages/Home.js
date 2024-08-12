@@ -41,7 +41,7 @@ function Home() {
             transform: 'translateY(0)'
           }
         }}}>
-        Welcome to Our App
+        Welcome to NakamaAI
       </Typography>
       <Button
         component={Link}
