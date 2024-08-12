@@ -89,7 +89,7 @@ function Feedback() {
                 >
                 <ReactStars
                     count={5}
-                    size={75}
+                    size={50}
                     color2={'#ffd700'}
                     value={0.5}
                     onChange={ratingChanged}
