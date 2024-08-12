@@ -100,6 +100,7 @@ function Login() {
             type="email"
             value={email}
             autoComplete='off'
+            autofill='off'
             onChange={(e) => setEmail(e.target.value)}
             required
             fullWidth
@@ -112,6 +113,7 @@ function Login() {
             type="password"
             value={password}
             autoComplete='off'
+            autofill='off'
             onChange={(e) => setPassword(e.target.value)}
             required
             fullWidth

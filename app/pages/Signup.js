@@ -128,6 +128,7 @@ function Signup() {
           variant="outlined"
           value={username}
           autoComplete='off'
+          autofill='off'
           sx={textfieldStyle}
           onChange={(e) => setUsername(e.target.value)}
           required
@@ -140,6 +141,7 @@ function Signup() {
             type="email"
             value={email}
             autoComplete='off'
+            autofill='off'
             onChange={(e) => setEmail(e.target.value)}
             required
             fullWidth
@@ -153,6 +155,7 @@ function Signup() {
           value={password}
           sx={textfieldStyle}
           autoComplete='off'
+          autofill='off'
           onChange={(e) => setPassword(e.target.value)}
           required
           fullWidth
