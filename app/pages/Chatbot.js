@@ -127,24 +127,6 @@ const handleKeyPress = (event) => {
         p={2}
         spacing={3}
       >
-        <Box
-          display="flex"
-          justifyContent="right"
-          alignItems="center"
-        >
-        <Button
-          sx={{
-            bgcolor: '#673ab7',
-            ':hover': {
-              bgcolor: '#4A148C', // Darker shade for hover on login
-            }
-          }}
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/feedback"
-        > Feedback </Button>
-        </Box>
         <Stack
           direction="column"
           spacing={5}
@@ -168,6 +150,19 @@ const handleKeyPress = (event) => {
           <div ref={messagesEndRef} />
         </Stack>
         <Stack direction="row" spacing={2} width="100%">
+        <Button
+            sx={{
+              bgcolor: '#673ab7',
+              ':hover': {
+                bgcolor: '#4A148C', // Darker shade for hover on login
+              }
+            }}
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/feedback"
+          >Feedback 
+        </Button>
         <TextField
             label="Message"
             fullWidth
