@@ -4,6 +4,7 @@ import Home from './pages/Home.js'
 import Chatbot from './pages/Chatbot.js'
 import Login from './pages/Login.js'
 import Signup from './pages/Signup.js'
+import Feedback from './pages/Feedback.js'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/feedback" element={<Feedback />} />
         </Routes>
     </Router>
   );

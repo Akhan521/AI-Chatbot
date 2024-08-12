@@ -1,7 +1,8 @@
 "use client";
 
-import { Box, Button, Stack, TextField } from '@mui/material'
+import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import { createRef, useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 const typingSpeed = 30; // Speed of typing can be adjusted here
 
@@ -29,6 +30,7 @@ function TypingMessage({ text }) {
 }
 
 function Chatbot() {
+
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -125,6 +127,24 @@ const handleKeyPress = (event) => {
         p={2}
         spacing={3}
       >
+        <Box
+          display="flex"
+          justifyContent="right"
+          alignItems="center"
+        >
+        <Button
+          sx={{
+            bgcolor: '#673ab7',
+            ':hover': {
+              bgcolor: '#4A148C', // Darker shade for hover on login
+            }
+          }}
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="/feedback"
+        > Feedback </Button>
+        </Box>
         <Stack
           direction="column"
           spacing={5}
