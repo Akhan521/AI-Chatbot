@@ -187,6 +187,7 @@ function Chatbot() {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
+            autoFocus
             sx={{
               "& label": {
                 color: "#9A9498",
