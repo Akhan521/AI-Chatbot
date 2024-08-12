@@ -124,6 +124,7 @@ function Chatbot() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      bgcolor="#181B1E"
     >
       <Stack
         direction="column"
@@ -172,7 +173,9 @@ function Chatbot() {
               bgcolor: '#673ab7',
               ':hover': {
                 bgcolor: '#4A148C', // Darker shade for hover on login
-              }
+              },
+              pl: 3,
+              pr: 3,
             }}
             variant="contained"
             color="primary"

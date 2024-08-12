@@ -66,11 +66,14 @@ function Feedback() {
                 flexDirection={'column'}
                 alignItems={'center'}
                 justifyContent={'center'}
+                padding={2}
             >
-                <Typography variant="h2" gutterBottom sx={{ color: 'white' }}>
+                <Typography variant="h2" align='center' gutterBottom sx={{ 
+                    color: 'white',
+                }}>
                     Rate Your Experience
                 </Typography>
-                <Typography variant="h5" gutterBottom sx={{ color: 'white' }}>
+                <Typography variant="h5" align='center' gutterBottom sx={{ color: 'white' }}>
                     How would you rate your experience with our chatbot?
                 </Typography>
             </Box>
@@ -86,6 +89,7 @@ function Feedback() {
                     alignItems={'center'}
                     justifyContent={'center'}
                     gap={2}
+                    padding={2}
                 >
                 <ReactStars
                     count={5}
@@ -106,10 +110,9 @@ function Feedback() {
                     variant="contained"
                     color="primary"
                     sx={{
-                        bgcolor: '#0A5C36',
                         ':hover': {
-                            bgcolor: '#14452F',
-                        }
+                            bgcolor: '#673ab7', 
+                        },
                     }}
                     component={Link}
                     to="/chatbot"
@@ -122,7 +125,8 @@ function Feedback() {
                 </Box>
             </Stack>
             <Typography
-                variant="h7"
+                variant="subtitle1"
+                align='center'
                 gutterBottom
                 sx={{ color: 'white' }}
             >

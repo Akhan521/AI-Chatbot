@@ -28,7 +28,7 @@ function Home() {
         
       }}
     >
-      <Typography variant="h2" gutterBottom sx={{ 
+      <Typography variant="h2" align='center' gutterBottom sx={{ 
         //fontFamily: 'Arial',
         fontWeight: 'bold', animation: 'fadeSlideIn 1.2s ease-out forwards',
         '@keyframes fadeSlideIn': {
@@ -39,7 +39,7 @@ function Home() {
           '100%': {
             opacity: 1,
             transform: 'translateY(0)'
-          }
+          },
         }}}>
         Welcome to NakamaAI
       </Typography>

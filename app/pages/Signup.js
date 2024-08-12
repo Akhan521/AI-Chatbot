@@ -127,22 +127,24 @@ function Signup() {
           label="Username"
           variant="outlined"
           value={username}
+          autoComplete='off'
           sx={textfieldStyle}
           onChange={(e) => setUsername(e.target.value)}
           required
           fullWidth
         />
 
-        <TextField
-          label="Email"
-          variant="outlined"
-          type="email"
-          value={email}
-          sx={textfieldStyle}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          FullWidth
-        />
+          <TextField
+            label="Email"
+            variant="outlined"
+            type="email"
+            value={email}
+            autoComplete='off'
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            fullWidth
+            sx={textfieldStyle}
+          />
 
         <TextField
           label="Password"
@@ -150,6 +152,7 @@ function Signup() {
           type="password"
           value={password}
           sx={textfieldStyle}
+          autoComplete='off'
           onChange={(e) => setPassword(e.target.value)}
           required
           fullWidth
@@ -180,7 +183,7 @@ function Signup() {
         justifyContent="center"
         width="100%"
       >
-        <Typography sx={{ mt: 2 }}>
+        <Typography sx={{ mt: 2, color:'white' }}>
           Already have an account?{" "}
           <Link 
             style={linkStyle}
@@ -198,12 +201,4 @@ function Signup() {
 
 export default Signup;
 
-
-
-// <Typography variant="h4" gutterBottom>
-//   Signup
-// </Typography>
-// <TextField label="Name" variant="outlined" fullWidth />
-// <TextField label="Email" variant="outlined" fullWidth />
-// <TextField label="Password" type="password" variant="outlined" fullWidth />
 

@@ -99,9 +99,10 @@ function Login() {
             variant="outlined"
             type="email"
             value={email}
+            autoComplete='off'
             onChange={(e) => setEmail(e.target.value)}
             required
-            fullWidth // 'mb' adds margin-bottom for spacing between fields
+            fullWidth
             sx={textfieldStyle}
           />
 
@@ -110,6 +111,7 @@ function Login() {
             variant="outlined"
             type="password"
             value={password}
+            autoComplete='off'
             onChange={(e) => setPassword(e.target.value)}
             required
             fullWidth
@@ -142,7 +144,7 @@ function Login() {
           width="100%"
         >
           <Typography
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, color: 'white' }}
           >
             Don't have an account?{" "}
             <Link
