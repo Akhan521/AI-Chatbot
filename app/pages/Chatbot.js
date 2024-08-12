@@ -1,17 +1,17 @@
 "use client";
 
-import { Box, Button, Stack, TextField } from '@mui/material'
-import { createRef, useState, useEffect, useRef } from 'react'
+import { Box, Button, Stack, TextField } from "@mui/material";
+import { createRef, useState, useEffect, useRef, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const typingSpeed = 30; // Speed of typing can be adjusted here
 
 function TypingMessage({ text }) {
-  const [displayText, setDisplayText] = useState('');
+  const [displayText, setDisplayText] = useState("");
   const index = useRef(0);
   const displayTextRef = useRef("");
 
   useEffect(() => {
-
     const timer = setInterval(() => {
       if (index.current < text.length) {
         displayTextRef.current += text.charAt(index.current);
@@ -31,82 +31,88 @@ function TypingMessage({ text }) {
 function Chatbot() {
   const [messages, setMessages] = useState([
     {
-      role: 'assistant',
-      content: "Hello! I'm your personal support assistant. How can I help you today?",
+      role: "assistant",
+      content: "Hello! I'm your personal character chatbot. How are you today?",
     },
   ]);
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return;
     setIsLoading(true);
 
-    setMessage('')
+    setMessage("");
     setMessages((messages) => [
       ...messages,
-      { role: 'user', content: message },
-      { role: 'assistant', content: "" },
-    ])
-  
+      { role: "user", content: message },
+      { role: "assistant", content: "" },
+    ]);
+
     // Fetch data from the API and handle response.
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
+      const response = await fetch("/api/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify([...messages, { role: 'user', content: message }]),
+        body: JSON.stringify({
+          user: user, // Include the user object in the request body
+          messages: [...messages, { role: "user", content: message }], // Include messages
+        }),
       });
-  
-      if (!response.ok) throw new Error('Network response was not ok');
-  
-      const reader = response.body.getReader()
-      const decoder = new TextDecoder()
+
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
 
       while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        const text = decoder.decode(value, { stream: true })
+        const { done, value } = await reader.read();
+        if (done) break;
+        const text = decoder.decode(value, { stream: true });
         setMessages((messages) => {
-          let lastMessage = messages[messages.length - 1]
-          let otherMessages = messages.slice(0, messages.length - 1)
+          let lastMessage = messages[messages.length - 1];
+          let otherMessages = messages.slice(0, messages.length - 1);
           return [
             ...otherMessages,
             { ...lastMessage, content: lastMessage.content + text },
-          ]
-        })
+          ];
+        });
       }
     } catch (error) {
-      console.error('Error:', error);
-      setMessages(messages => [
+      console.error("Error:", error);
+      setMessages((messages) => [
         ...messages,
-        { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+        {
+          role: "assistant",
+          content:
+            "I'm sorry, but I encountered an error. Please try again later.",
+        },
       ]);
     }
-  
+
     setIsLoading(false);
   };
-  
 
-const handleKeyPress = (event) => {
-  if (event.key === 'Enter' && !event.shiftKey) {
-    event.preventDefault()
-    sendMessage()
-  }
-};
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  };
 
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <Box
@@ -134,12 +140,23 @@ const handleKeyPress = (event) => {
           p={2}
         >
           {messages.map((message, index) => (
-            <Box key={index} display="flex" justifyContent={message.role === 'assistant' ? 'flex-start' : 'flex-end'}>
-              <Box bgcolor={message.role === 'assistant' ? 'primary.main' : 'secondary.main'}
+            <Box
+              key={index}
+              display="flex"
+              justifyContent={
+                message.role === "assistant" ? "flex-start" : "flex-end"
+              }
+            >
+              <Box
+                bgcolor={
+                  message.role === "assistant"
+                    ? "primary.main"
+                    : "secondary.main"
+                }
                 color="white"
                 borderRadius={16}
                 p={3}
-                sx={{ maxWidth: 'fit-content', width: 'auto'}}
+                sx={{ maxWidth: "fit-content", width: "auto" }}
               >
                 <TypingMessage key={message.content} text={message.content} />
               </Box>
@@ -148,7 +165,7 @@ const handleKeyPress = (event) => {
           <div ref={messagesEndRef} />
         </Stack>
         <Stack direction="row" spacing={2} width="100%">
-        <TextField
+          <TextField
             label="Message"
             fullWidth
             value={message}
@@ -156,33 +173,37 @@ const handleKeyPress = (event) => {
             onKeyDown={handleKeyPress}
             disabled={isLoading}
             sx={{
-              '& label': {
-                color: '#9A9498',
+              "& label": {
+                color: "#9A9498",
               },
-              '&:hover label': {
-                color: 'white', // Sets the label color to white on hover
+              "&:hover label": {
+                color: "white", // Sets the label color to white on hover
               },
-              '& .MuiInputBase-input': {
-                color: 'white', // Sets the text color inside the input field to white
+              "& .MuiInputBase-input": {
+                color: "white", // Sets the text color inside the input field to white
               },
-              '& label.Mui-focused': {
-                color: 'white',
+              "& label.Mui-focused": {
+                color: "white",
               },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#9A9498',
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#9A9498",
                 },
-                '&:hover fieldset': {
-                  borderColor: 'white',
+                "&:hover fieldset": {
+                  borderColor: "white",
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#9A9498',
+                "&.Mui-focused fieldset": {
+                  borderColor: "#9A9498",
                 },
               },
             }}
           />
-          <Button variant="contained" onClick={sendMessage} disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send'}
+          <Button
+            variant="contained"
+            onClick={sendMessage}
+            disabled={isLoading}
+          >
+            {isLoading ? "Sending..." : "Send"}
           </Button>
         </Stack>
       </Stack>
